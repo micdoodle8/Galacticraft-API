@@ -133,6 +133,14 @@ public class GalacticraftRegistry
 
     public static void registerSpaceStation(SpaceStationType type)
     {
+        for (SpaceStationType type1 : GalacticraftRegistry.spaceStations)
+        {
+            if (type1.getWorldToOrbitID() == type.getWorldToOrbitID())
+            {
+                throw new RuntimeException("Two space station types registered with the same home planet ID: " + type.getWorldToOrbitID());
+            }
+        }
+
         GalacticraftRegistry.spaceStations.add(type);
     }
 
