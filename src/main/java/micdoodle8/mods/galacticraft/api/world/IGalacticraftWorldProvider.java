@@ -66,6 +66,15 @@ public interface IGalacticraftWorldProvider
      * @return True if players can breathe here, False if not.
      */
     public boolean hasBreathableAtmosphere();
+   
+    /**
+     * If false (the default) then Nether Portals will have no function on this world.
+     * Nether Portals can still be constructed, if the player can make fire, they just
+     * won't do anything.
+     * 
+     * @return True if Nether Portals should work like on the Overworld.
+     */
+    public boolean netherPortalsOperational();
 
     /**
      * Whether or not the atmosphere of this dimension contains the specified gas
