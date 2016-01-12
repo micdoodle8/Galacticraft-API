@@ -274,7 +274,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         public ScalableDistance(float unScaledDistance, float scaledDistance)
         {
             this.unScaledDistance = unScaledDistance;
-            this.scaledDistance = unScaledDistance;
+            this.scaledDistance = scaledDistance;
         }
     }
 }
