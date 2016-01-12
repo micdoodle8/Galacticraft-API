@@ -78,7 +78,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     @Override
     public void setDead()
     {
-        super.setDead();
+        if (!this.isDead)
+        	super.setDead();
 
 	//TODO reimplement once Resonant Engine comes out of alpha, bug Dark for info
         //if (Loader.isModLoaded("ICBM|Explosion"))
@@ -328,7 +329,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (this.worldObj.isRemote)
             {
-            	//reset the sounds on the client
+            	//reset the sounds on the client - it's ok to do this over and over
             	this.stopRocketSound();
             	this.rocketSoundUpdater = null;
                 return;
@@ -373,12 +374,14 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 	                            {
 	                                WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
 	                            }
-	
+	                            //Now destroy the rocket entity, the rider is switching dimensions
+	                            //or if there is no rider, the rocket can be destroyed anyhow (Cargo Rockets override this)
+	                            this.setDead();
 	                            return;
 	                    	}
                         }
                     }
-                    //No return - in this situation continue into regular take-off
+                    //No destination world found - in this situation continue into regular take-off (as if Not launch controlled)
                 }
                 else
                 {
@@ -390,12 +393,15 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                         if (ConfigManagerCore.enableDebug) GCLog.info("Rocket repositioned, waiting for player");
                     }
                     this.landing = true;
+                    //Do not destroy the rocket, we still need it!
                     return;
                 }
             }
             else
             {
-                this.setDead();
+                //Launch controlled launch but no valid target frequency = rocket loss [INVESTIGATE]
+            	GCLog.info("Error: the launch controlled rocket failed to find a valid landing spot when it reached space.");
+            	this.setDead();
                 return;
             }
         }
@@ -410,13 +416,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 this.onTeleport(player);
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 WorldUtil.toCelestialSelection(player, stats, this.getRocketTier());
-
-                if (!this.isDead)
-                {
-                    this.setDead();
-                }
             }
         }
+        
+        //Destroy any rocket which reached the top of the atmosphere and is not controlled by a Launch Controller
+        this.setDead();
     }
 
     @Override
