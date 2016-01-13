@@ -277,4 +277,9 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
             this.scaledDistance = scaledDistance;
         }
     }
+
+	public void setUnreachable()
+	{
+		this.isReachable = false;
+	}
 }

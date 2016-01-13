@@ -199,15 +199,28 @@ public class GalacticraftRegistry
         return GalacticraftRegistry.dungeonLootMap.get(tier);
     }
     
-    public static void registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
+    /***
+     * Now returns a boolean to indicate whether registration of the WorldProvider type was successful.
+     * (If it failed, you should probably set the CelestialBody as unreachable.)
+     * 
+     * @param id
+     * @param provider
+     * @param keepLoaded
+     * @return <boolean> success
+     */
+    public static boolean registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
     {
     	boolean flag = DimensionManager.registerProviderType(id, provider, keepLoaded);
     	if (flag)
+    	{
     		GalacticraftRegistry.worldProviderIDs.add(id);
+    		return true;
+    	}
     	else
     	{
-    		GalacticraftRegistry.worldProviderIDs.add(0);
+    		GalacticraftRegistry.worldProviderIDs.add(0);  //Adding the 0 here preserves the order, important for network compatibility between GC versions
     		FMLLog.severe("Could not register dimension " + id + " - does it clash with another mod?  Change the ID in config.");
+    		return false;
     	}
     }
     
