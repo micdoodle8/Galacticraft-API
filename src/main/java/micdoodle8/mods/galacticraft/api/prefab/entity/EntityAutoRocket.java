@@ -24,6 +24,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.audio.ISound;
@@ -196,16 +197,17 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
                             if (launchController != null)
                             {
-                                Boolean b = (Boolean) controllerClass.getMethod("validFrequency").invoke(launchController);
+                            	Boolean b = (Boolean) controllerClass.getMethod("validFrequency").invoke(launchController);
 
                                 if (b != null && b)
                                 {
-                                    int controllerFrequency = controllerClass.getField("destFrequency").getInt(launchController);
+                                	int controllerFrequency = controllerClass.getField("destFrequency").getInt(launchController);
                                     boolean foundPad = this.setTarget(false, controllerFrequency);
 
                                     if (foundPad)
                                     {
                                         this.destinationFrequency = controllerFrequency;
+                                        GCLog.debug("Rocket under launch control: going to target frequency " + controllerFrequency);
                                         return true;
                                     }
                                 }
@@ -547,7 +549,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             {
                 if (connectedTile != null)
                 {
-                    TileEntity updatedTile = this.worldObj.getTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
+                	TileEntity updatedTile = this.worldObj.getTileEntity(((TileEntity) connectedTile).xCoord, ((TileEntity) connectedTile).yCoord, ((TileEntity) connectedTile).zCoord);
 
                     try
                     {

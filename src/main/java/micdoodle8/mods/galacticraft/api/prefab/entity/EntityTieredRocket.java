@@ -329,9 +329,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (this.worldObj.isRemote)
             {
-            	//reset the sounds on the client - it's ok to do this over and over
+            	//stop the sounds on the client - but do not reset, the rocket may start again
             	this.stopRocketSound();
-            	this.rocketSoundUpdater = null;
                 return;
             }
 
@@ -342,10 +341,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 if (this.targetDimension != this.worldObj.provider.dimensionId)
                 {
                     WorldProvider targetDim = WorldUtil.getProviderForDimension(this.targetDimension);                   
-                    MinecraftServer mcserver = FMLCommonHandler.instance().getMinecraftServerInstance();
-                    if (targetDim != null && mcserver != null)
+                    if (targetDim != null && targetDim.worldObj instanceof WorldServer)
                     {
-                    	WorldServer worldServer = mcserver.worldServerForDimension(this.targetDimension);
+                    	WorldServer worldServer = (WorldServer) targetDim.worldObj;
                         if (worldServer != null)
                         {
 	                        boolean dimensionAllowed = this.targetDimension == 0;
