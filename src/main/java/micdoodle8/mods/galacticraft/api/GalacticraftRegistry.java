@@ -208,7 +208,7 @@ public class GalacticraftRegistry
      * @param keepLoaded
      * @return <boolean> success
      */
-    public static boolean registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
+    public static boolean registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded, int defaultID)
     {
     	boolean flag = DimensionManager.registerProviderType(id, provider, keepLoaded);
     	if (flag)
@@ -218,10 +218,24 @@ public class GalacticraftRegistry
     	}
     	else
     	{
-    		GalacticraftRegistry.worldProviderIDs.add(0);  //Adding the 0 here preserves the order, important for network compatibility between GC versions
+    		GalacticraftRegistry.worldProviderIDs.add(defaultID);  //Adding the 0 here preserves the order, important for network compatibility between GC versions
     		FMLLog.severe("Could not register dimension " + id + " - does it clash with another mod?  Change the ID in config.");
     		return false;
     	}
+    }
+
+    /**
+     * You should now use GalacticraftRegistry.registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded, int defaultID)
+     * which returns a boolean indicating if the Provider was registered OK.
+     * 
+     * @param id
+     * @param provider
+     * @param keepLoaded
+     */
+    @Deprecated
+    public static void registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
+    {
+    	GalacticraftRegistry.registerProvider(id, provider, keepLoaded, 0);
     }
     
     public static int getProviderID(int index)
