@@ -340,44 +340,40 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 if (this.targetDimension != this.worldObj.provider.dimensionId)
                 {
-                    WorldProvider targetDim = WorldUtil.getProviderForDimension(this.targetDimension);                   
+                    WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
                     if (targetDim != null && targetDim.worldObj instanceof WorldServer)
                     {
-                    	WorldServer worldServer = (WorldServer) targetDim.worldObj;
-                        if (worldServer != null)
-                        {
-	                        boolean dimensionAllowed = this.targetDimension == 0;
-	
-	                        if (targetDim instanceof IGalacticraftWorldProvider)
-	                        {
-	                        	if (((IGalacticraftWorldProvider) targetDim).canSpaceshipTierPass(this.getRocketTier()))
-	                        		dimensionAllowed = true;
-	                        	else
-	                        		dimensionAllowed = false;
-                        	}
-	                        else
-	                        //No rocket flight to non-Galacticraft dimensions other than the Overworld allowed unless config
-	                        if (this.targetDimension > 1 || this.targetDimension < -1)
-	                        {
-	                            try {
-		                        	Class<?> marsConfig = Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars");
-		                        	if (marsConfig.getField("launchControllerAllDims").getBoolean(null))
-		                        		dimensionAllowed = true;
-	                            } catch (Exception e) { e.printStackTrace(); }
-	                        }
-	
-	                    	if (dimensionAllowed)
-	                    	{
-	                            if (this.riddenByEntity != null)
-	                            {
-	                                WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, worldServer, false, this);
-	                            }
-	                            //Now destroy the rocket entity, the rider is switching dimensions
-	                            //or if there is no rider, the rocket can be destroyed anyhow (Cargo Rockets override this)
-	                            this.setDead();
-	                            return;
-	                    	}
-                        }
+                    	boolean dimensionAllowed = this.targetDimension == 0;
+
+                    	if (targetDim instanceof IGalacticraftWorldProvider)
+                    	{
+                    		if (((IGalacticraftWorldProvider) targetDim).canSpaceshipTierPass(this.getRocketTier()))
+                    			dimensionAllowed = true;
+                    		else
+                    			dimensionAllowed = false;
+                    	}
+                    	else
+                    		//No rocket flight to non-Galacticraft dimensions other than the Overworld allowed unless config
+                    		if (this.targetDimension > 1 || this.targetDimension < -1)
+                    		{
+                    			try {
+                    				Class<?> marsConfig = Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars");
+                    				if (marsConfig.getField("launchControllerAllDims").getBoolean(null))
+                    					dimensionAllowed = true;
+                    			} catch (Exception e) { e.printStackTrace(); }
+                    		}
+
+                    	if (dimensionAllowed)
+                    	{
+                    		if (this.riddenByEntity != null)
+                    		{
+                    			WorldUtil.transferEntityToDimension(this.riddenByEntity, this.targetDimension, (WorldServer) targetDim.worldObj, false, this);
+                    		}
+                    		//Now destroy the rocket entity, the rider is switching dimensions
+                    		//or if there is no rider, the rocket can be destroyed anyhow (Cargo Rockets override this)
+                    		this.setDead();
+                    		return;
+                    	}
                     }
                     //No destination world found - in this situation continue into regular take-off (as if Not launch controlled)
                 }
