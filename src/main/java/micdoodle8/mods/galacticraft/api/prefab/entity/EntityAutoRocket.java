@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -45,7 +46,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -966,12 +966,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public int addFuel(FluidStack liquid, boolean doFill)
     {
-        if (liquid != null && FluidRegistry.getFluidName(liquid).startsWith("fuel"))
-        {
-            return this.fuelTank.fill(liquid, doFill);
-        }
-
-        return 0;
+    	return FluidUtil.fillWithGCFuel(this.fuelTank, liquid, doFill);
     }
 
     @Override
