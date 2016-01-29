@@ -30,7 +30,7 @@ public class GalacticraftConfigAccess
 		return false;
 	}
 	
-	public static boolean getAdventureMode()
+	public static boolean getChallengeMode()
 	{
 		if (quickMode == null)
 			setup();
@@ -47,7 +47,7 @@ public class GalacticraftConfigAccess
 			Class<?> GCConfig = Class.forName("micdoodle8.mods.galacticraft.core.util.ConfigManagerCore");
 			quickMode = GCConfig.getField("quickMode");
 			hardMode = GCConfig.getField("hardMode");
-			adventureMode = GCConfig.getField("adventureMode");
+			adventureMode = GCConfig.getField("challengeMode");
 		} catch (Exception e) { e.printStackTrace(); }
 	}
 }

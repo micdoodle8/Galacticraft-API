@@ -341,6 +341,6 @@ public class CompressorRecipes
 
     public static List<IRecipe> getRecipeList()
     {
-    	return GalacticraftConfigAccess.getAdventureMode() ? CompressorRecipes.recipesAdventure : CompressorRecipes.recipes;
+    	return GalacticraftConfigAccess.getChallengeMode() ? CompressorRecipes.recipesAdventure : CompressorRecipes.recipes;
     }
 }
