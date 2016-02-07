@@ -12,6 +12,7 @@ import net.minecraft.util.ReportedException;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /* BlockVec3 is similar to galacticraft.api.vector.Vector3?
@@ -588,4 +589,16 @@ public class BlockVec3 implements Cloneable
     {
         this.sideDone[side] = true;
     }
+
+	public TileEntity getTileEntityForce(World world)
+	{
+        int chunkx = this.x >> 4;
+        int chunkz = this.z >> 4;
+		
+		if (world.getChunkProvider().chunkExists(chunkx, chunkz))
+			return world.getTileEntity(this.x, this.y, this.z);
+		
+		Chunk chunk = ((ChunkProviderServer) world.getChunkProvider()).originalLoadChunk(chunkx, chunkz);
+		return chunk.func_150806_e(this.x & 15, this.y, this.z & 15);
+	}
 }
