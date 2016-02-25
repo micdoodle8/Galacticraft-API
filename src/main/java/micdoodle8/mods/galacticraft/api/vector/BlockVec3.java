@@ -27,7 +27,7 @@ public class BlockVec3 implements Cloneable
     public int x;
     public int y;
     public int z;
-    public boolean[] sideDone = { false, false, false, false, false, false };
+    public int sideDoneBits = 0;
     private static Chunk chunkCached;
     public static int chunkCacheDim = Integer.MAX_VALUE;
     private static int chunkCacheX = 1876000; // outside the world edge
@@ -299,7 +299,7 @@ public class BlockVec3 implements Cloneable
     public BlockVec3 newVecSide(int side)
     {
         BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
-        vec.sideDone[side ^ 1] = true;
+        vec.sideDoneBits |= 1 << side;
         switch (side)
         {
         case 0:
@@ -587,7 +587,7 @@ public class BlockVec3 implements Cloneable
 
     public void setSideDone(int side)
     {
-        this.sideDone[side] = true;
+        this.sideDoneBits |= 1 << side;
     }
 
 	public TileEntity getTileEntityForce(World world)
