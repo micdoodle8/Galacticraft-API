@@ -343,4 +343,16 @@ public class CompressorRecipes
     {
     	return GalacticraftConfigAccess.getChallengeMode() ? CompressorRecipes.recipesAdventure : CompressorRecipes.recipes;
     }
+    
+    public static void removeRecipe(ItemStack match)
+    {
+        List<IRecipe> theRecipes = CompressorRecipes.getRecipeList();
+    	
+    	for (int j = 0; j < theRecipes.size(); ++j)
+        {
+            IRecipe irecipe = theRecipes.get(j);
+            if (ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()))
+            	theRecipes.remove(j);
+        }
+    }
 }
