@@ -346,13 +346,11 @@ public class CompressorRecipes
     
     public static void removeRecipe(ItemStack match)
     {
-        List<IRecipe> theRecipes = CompressorRecipes.getRecipeList();
-    	
-    	for (int j = 0; j < theRecipes.size(); ++j)
+    	for (Iterator<IRecipe> it = CompressorRecipes.getRecipeList().iterator(); it.hasNext(); )
         {
-            IRecipe irecipe = theRecipes.get(j);
+            IRecipe irecipe = it.next();
             if (ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()))
-            	theRecipes.remove(j);
+            	it.remove();
         }
     }
 }

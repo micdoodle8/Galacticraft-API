@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -122,10 +123,11 @@ public class CircuitFabricatorRecipes
     
     public static void removeRecipe(ItemStack match)
     {
-    	for (Map.Entry<ItemStack[], ItemStack> recipe : CircuitFabricatorRecipes.recipes.entrySet())
+    	for (Iterator<Map.Entry<ItemStack[], ItemStack>> it = CircuitFabricatorRecipes.recipes.entrySet().iterator(); it.hasNext(); )
         {
-            if (ItemStack.areItemStacksEqual(match, recipe.getValue()))
-            	CircuitFabricatorRecipes.recipes.remove(recipe.getKey());
+            Map.Entry<ItemStack[], ItemStack> recipe = it.next();
+    		if (ItemStack.areItemStacksEqual(match, recipe.getValue()))
+            	it.remove();
         }
     }
 }
