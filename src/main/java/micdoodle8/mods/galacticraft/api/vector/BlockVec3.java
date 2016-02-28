@@ -299,7 +299,7 @@ public class BlockVec3 implements Cloneable
     public BlockVec3 newVecSide(int side)
     {
         BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
-        vec.sideDoneBits = 1 << (side ^ 1);
+        vec.sideDoneBits = (1 << (side ^ 1)) + (side << 6);
         switch (side)
         {
         case 0:
