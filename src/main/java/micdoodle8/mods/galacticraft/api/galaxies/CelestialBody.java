@@ -26,6 +26,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected int tierRequired = 0;
 
     public ArrayList<IAtmosphericGas> atmosphere = new ArrayList();
+    protected float atmosphericPressure = 1.0F;
 
     protected ResourceLocation celestialBodyIcon;
 
@@ -42,6 +43,27 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     public abstract int getID();
 
     public abstract String getUnlocalizedNamePrefix();
+
+    /**
+     * Get the current atmospheric pressure (at surface level). Will return 0 if no atmospheric gases are defined.
+     * @return
+     */
+    public float getAtmosphericPressure() {
+        if(this.atmosphere.isEmpty()) {
+            // disregard the value if there aren't any gases
+            return 0.0F;
+        }
+        return this.atmosphericPressure;
+    }
+
+    /**
+     * Set the atmospheric pressure at the surface. 1 = like Overworld.
+     * @param pressure
+     */
+    public void setAtmosphericPressure(float pressure)
+    {
+        this.atmosphericPressure = pressure;
+    }
 
     public String getName()
     {
