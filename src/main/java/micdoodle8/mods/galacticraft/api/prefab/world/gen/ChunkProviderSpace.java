@@ -16,6 +16,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -230,6 +231,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
         final Block[] ids = new Block[32768 * 2];
         final byte[] meta = new byte[32768 * 2];
+        Arrays.fill(ids, Blocks.air);
         this.generateTerrain(par1, par2, ids, meta);
         this.createCraters(par1, par2, ids, meta);
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
